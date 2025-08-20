@@ -2,7 +2,9 @@ package com.pradeep.Contact_Management_System.controller;
 
 import com.pradeep.Contact_Management_System.dtos.ContactInfoDTO;
 import com.pradeep.Contact_Management_System.service.contactService;
+import com.pradeep.students_common.common.StudentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +23,8 @@ public class contactController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContactInfoDTO> getContactById(@PathVariable String id) {
-        return ResponseEntity.ok(contactService.getContactById(id));
+    public ResponseEntity<StudentResponse> getContactById(@PathVariable String id) {
+        return ResponseEntity.ok(new StudentResponse("Record fetch succesfully", HttpStatus.OK, contactService.getContactById(id)));
     }
 
     @GetMapping
@@ -36,7 +38,7 @@ public class contactController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteContact(@PathVariable String id) {
+    public ResponseEntity<StudentResponse> deleteContact(@PathVariable String id) {
         contactService.deleteContact(id);
         return ResponseEntity.noContent().build();
     }

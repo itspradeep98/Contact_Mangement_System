@@ -3,8 +3,11 @@ package com.pradeep.Contact_Management_System.service.impl;
 import com.pradeep.Contact_Management_System.dtos.ContactInfoDTO;
 import com.pradeep.Contact_Management_System.repository.contactRepo;
 import com.pradeep.Contact_Management_System.service.contactService;
-import com.pradeep.students_common.entities.contactInfo;
+import com.pradeep.students_common.common.StudentResponse;
+import com.pradeep.students_common.entities.ContactInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +21,14 @@ public class contactServiceImpl implements contactService {
 
     @Override
     public ContactInfoDTO createContact(ContactInfoDTO contactInfoDTO) {
-        contactInfo contact = mapToEntity(contactInfoDTO);
+        ContactInfo contact = mapToEntity(contactInfoDTO);
         contact = contactRepo.save(contact);
         return mapToDTO(contact);
     }
 
     @Override
     public ContactInfoDTO getContactById(String id) {
-        contactInfo contact = contactRepo.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
+        ContactInfo contact = contactRepo.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
         return mapToDTO(contact);
     }
 
@@ -36,7 +39,7 @@ public class contactServiceImpl implements contactService {
 
     @Override
     public ContactInfoDTO updateContact(String id, ContactInfoDTO contactInfoDTO) {
-        contactInfo contact = contactRepo.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
+        ContactInfo contact = contactRepo.findById(id).orElseThrow(() -> new RuntimeException("Contact not found"));
         contact.setFirst_Name(contactInfoDTO.getFirstName());
         contact.setMiddle_Name(contactInfoDTO.getMiddleName());
         contact.setLast_Name(contactInfoDTO.getLastName());
@@ -48,12 +51,24 @@ public class contactServiceImpl implements contactService {
     }
 
     @Override
-    public void deleteContact(String id) {
-        contactRepo.deleteById(id);
+    public ResponseEntity<StudentResponse> deleteContact(String id) {
+        try{
+            ContactInfo contactInfo = contactRepo.findById(id).orElse(null);
+            if(contactRepo.findById(id) == null) {
+                throw new RuntimeException("Contact not found");
+            }
+            contactRepo.deleteById(id);
+            return ResponseEntity.ok(new StudentResponse("Contact deleted successfully", HttpStatus.OK, contactInfo));
+        }catch (RuntimeException e) {
+            return ResponseEntity.ok(new StudentResponse(e.getMessage(), HttpStatus.NOT_FOUND, null));
+        }catch (Exception e){
+            return ResponseEntity.ok(new StudentResponse("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR, null));
+        }
+
     }
 
-    private contactInfo mapToEntity(ContactInfoDTO contactInfoDTO) {
-        return new contactInfo(
+    private ContactInfo mapToEntity(ContactInfoDTO contactInfoDTO) {
+        return new ContactInfo(
                 contactInfoDTO.getId(),
                 null, // Assuming `students` is handled elsewhere
                 contactInfoDTO.getFirstName(),
@@ -65,7 +80,7 @@ public class contactServiceImpl implements contactService {
         );
     }
 
-    private ContactInfoDTO mapToDTO(contactInfo contact) {
+    private ContactInfoDTO mapToDTO(ContactInfo contact) {
         return new ContactInfoDTO(
                 contact.getId(),
                 contact.getFirst_Name(),

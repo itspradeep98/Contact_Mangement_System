@@ -1,8 +1,8 @@
 package com.pradeep.Contact_Management_System.service.impl;
 
 import com.pradeep.Contact_Management_System.dtos.ContactInfoDTO;
-import com.pradeep.Contact_Management_System.repository.contactRepo;
-import com.pradeep.Contact_Management_System.service.contactService;
+import com.pradeep.Contact_Management_System.repository.ContactRepo;
+import com.pradeep.Contact_Management_System.service.ContactService;
 import com.pradeep.students_common.common.StudentResponse;
 import com.pradeep.students_common.entities.ContactInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class contactServiceImpl implements contactService {
+public class ContactServiceImpl implements ContactService {
 
     @Autowired
-    private contactRepo contactRepo;
+    private ContactRepo contactRepo;
 
     @Override
     public ContactInfoDTO createContact(ContactInfoDTO contactInfoDTO) {

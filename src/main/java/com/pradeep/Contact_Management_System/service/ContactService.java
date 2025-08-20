@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface contactService {
+public interface ContactService {
 
     ContactInfoDTO createContact(ContactInfoDTO contactInfoDTO);
     ContactInfoDTO getContactById(String id);

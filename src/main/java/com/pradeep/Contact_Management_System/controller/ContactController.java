@@ -1,7 +1,7 @@
 package com.pradeep.Contact_Management_System.controller;
 
 import com.pradeep.Contact_Management_System.dtos.ContactInfoDTO;
-import com.pradeep.Contact_Management_System.service.contactService;
+import com.pradeep.Contact_Management_System.service.ContactService;
 import com.pradeep.students_common.common.StudentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("contacts")
-public class contactController {
+public class ContactController {
 
     @Autowired
-    private contactService contactService;
+    private ContactService contactService;
 
     @PostMapping
     public ResponseEntity<ContactInfoDTO> createContact(@RequestBody ContactInfoDTO contactInfoDTO) {
@@ -28,8 +28,8 @@ public class contactController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ContactInfoDTO>> getAllContacts() {
-        return ResponseEntity.ok(contactService.getAllContacts());
+    public ResponseEntity<StudentResponse> getAllContacts() {
+        return ResponseEntity.ok(new StudentResponse("All records fetched successfully", HttpStatus.OK, contactService.getAllContacts()));
     }
 
     @PutMapping("/{id}")

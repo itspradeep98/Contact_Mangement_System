@@ -2,7 +2,7 @@ package com.pradeep.Contact_Management_System.dtos;
 
 import java.util.List;
 
-import com.pradeep.students_common.entities.contactInfo;
+import com.pradeep.students_common.entities.ContactInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,8 +20,8 @@ public class ContactInfoDTO {
     private String field;
 
 
-    private contactInfo mapToEntity(ContactInfoDTO contactInfoDTO) {
-        return new contactInfo(
+    private ContactInfo mapToEntity(ContactInfoDTO contactInfoDTO) {
+        return new ContactInfo(
                 contactInfoDTO.getId(),
                 null, // Assuming `students` is handled elsewhere
                 contactInfoDTO.getFirstName(),
@@ -33,7 +33,7 @@ public class ContactInfoDTO {
         );
     }
 
-    private ContactInfoDTO mapToDTO(contactInfo contact) {
+    private ContactInfoDTO mapToDTO(ContactInfo contact) {
         return new ContactInfoDTO(
                 contact.getId(),
                 contact.getFirst_Name(),
